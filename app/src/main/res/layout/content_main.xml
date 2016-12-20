@@ -17,4 +17,29 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Hello World!" />
+
+    <android.support.v7.widget.CardView
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/card_view1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        card_view:cardCornerRadius="6dp"
+        card_view:cardElevation="6dp"
+        card_view:contentPadding="25dp"
+        card_view:cardBackgroundColor="#2196F3"
+
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="SIMPLE \n CARDVIEW"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            android:textColor="#E3F2FD"
+            />
+    </android.support.v7.widget.CardView>
+
 </RelativeLayout>
