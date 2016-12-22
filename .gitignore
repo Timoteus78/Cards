@@ -1,11 +1,12 @@
-*.iml
+#*.iml
 .gradle
 gradlew
 gradlew.bat
-/gradle
+#/gradle
 /local.properties
-/.idea
+/.idea/workspace.xml
+/.idea/libraries
 .DS_Store
 /build
-/captures
-.externalNativeBuild
+#/captures
+#.externalNativeBuild
