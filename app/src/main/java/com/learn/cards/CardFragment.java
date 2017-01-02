@@ -28,7 +28,16 @@ public class CardFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initializeList();
+        //tempAddCard();
         getActivity().setTitle("All Cards");
+    }
+
+    public void tempAddCard() {
+        CardModel item = new CardModel();
+        item.setCardName(CardTitles[1]);
+        item.setImageResourceId(Images[1]);
+        listitems.add(item);
+        MyRecyclerView.getAdapter().notifyItemInserted(listitems.size() -1);
     }
 
     @Override
@@ -51,6 +60,10 @@ public class CardFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+    }
+
+    public ArrayList<CardModel> getListItems() {
+        return listitems;
     }
 
     public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
@@ -98,7 +111,7 @@ public class CardFragment extends Fragment {
 
     public void initializeList() {
         listitems.clear();
-        for(int i =0;i<7;i++){
+        for(int i =0;i<1;i++){
             CardModel item = new CardModel();
             item.setCardName(CardTitles[i]);
             item.setImageResourceId(Images[i]);

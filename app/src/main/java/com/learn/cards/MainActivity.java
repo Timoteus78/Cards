@@ -7,10 +7,13 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -27,6 +30,18 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                CardModel item  = new CardModel();
+                item.setCardName("Programmaticaly added");
+                item.setImageResourceId(R.drawable.christ_the_redeemer);
+
+                FragmentManager fm = getSupportFragmentManager();
+                CardFragment fragment = (CardFragment) fm.findFragmentById(R.id.fragmentContainer);
+                ArrayList<CardModel> listitems= fragment.getListItems();
+                listitems.add(item);
+
+                RecyclerView MyRecyclerView = (RecyclerView) fragment.getView().findViewById(R.id.cardView);
+                MyRecyclerView.getAdapter().notifyItemInserted(listitems.size() -1);
 
             }
         });
