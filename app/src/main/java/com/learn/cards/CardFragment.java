@@ -21,23 +21,14 @@ public class CardFragment extends Fragment {
 
     ArrayList<CardModel> listitems = new ArrayList<>();
     RecyclerView MyRecyclerView;
-    String CardTitles[] = {"Chichen Itza","Christ the Redeemer","Great Wall of China","Machu Picchu","Petra","Taj Mahal","Colosseum"};
-    int  Images[] = {R.drawable.chichen_itza,R.drawable.christ_the_redeemer,R.drawable.great_wall_of_china,R.drawable.machu_picchu,R.drawable.petra,R.drawable.taj_mahal,R.drawable.colosseum};
+    String CardTitles[] = {"Chichen Itza"};
+    int  Images[] = {R.drawable.chichen_itza};
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initializeList();
-        //tempAddCard();
         getActivity().setTitle("All Cards");
-    }
-
-    public void tempAddCard() {
-        CardModel item = new CardModel();
-        item.setCardName(CardTitles[1]);
-        item.setImageResourceId(Images[1]);
-        listitems.add(item);
-        MyRecyclerView.getAdapter().notifyItemInserted(listitems.size() -1);
     }
 
     @Override
@@ -62,8 +53,13 @@ public class CardFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
     }
 
-    public ArrayList<CardModel> getListItems() {
-        return listitems;
+    public void addItem(String title, int drawable) {
+        CardModel item  = new CardModel();
+        item.setCardName(title);
+        item.setImageResourceId(drawable);
+
+        listitems.add(item);
+        //MyRecyclerView.getAdapter().notifyItemInserted(listitems.size() -1);
     }
 
     public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
@@ -110,8 +106,8 @@ public class CardFragment extends Fragment {
     }
 
     public void initializeList() {
-        listitems.clear();
-        for(int i =0;i<1;i++){
+        //listitems.clear();
+        for(int i =0;i<CardTitles.length;i++){
             CardModel item = new CardModel();
             item.setCardName(CardTitles[i]);
             item.setImageResourceId(Images[i]);

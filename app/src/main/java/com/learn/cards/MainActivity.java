@@ -30,26 +30,21 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                CardModel item  = new CardModel();
-                item.setCardName("Programmaticaly added");
-                item.setImageResourceId(R.drawable.christ_the_redeemer);
-
-                FragmentManager fm = getSupportFragmentManager();
-                CardFragment fragment = (CardFragment) fm.findFragmentById(R.id.fragmentContainer);
-                ArrayList<CardModel> listitems= fragment.getListItems();
-                listitems.add(item);
-
-                RecyclerView MyRecyclerView = (RecyclerView) fragment.getView().findViewById(R.id.cardView);
-                MyRecyclerView.getAdapter().notifyItemInserted(listitems.size() -1);
-
+                createCardForm(view);
             }
         });
 
         FragmentManager fm = getSupportFragmentManager();
-        Fragment fragment = fm.findFragmentById(R.id.fragmentContainer);
+        CardFragment fragment = (CardFragment)fm.findFragmentById(R.id.fragmentContainer);
         if (fragment == null) {
             fragment = new CardFragment();
+
+            Intent intent = getIntent();
+            String question = intent.getStringExtra(CardFormActivity.MESSAGE_QUESTION);
+            if (question != null) {
+                fragment.addItem(question, R.drawable.great_wall_of_china);
+            }
+
             fm.beginTransaction()
                     .add(R.id.fragmentContainer, fragment)
                     .commit();
@@ -79,5 +74,9 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    public void createCardForm (View view) {
+        Intent intent = new Intent(this, CardFormActivity.class);
+        startActivity(intent);
+    }
 
 }
