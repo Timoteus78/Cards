@@ -13,6 +13,9 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
@@ -42,6 +45,9 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = getIntent();
             String question = intent.getStringExtra(CardFormActivity.MESSAGE_QUESTION);
             if (question != null) {
+                FirebaseDatabase database = FirebaseDatabase.getInstance();
+                DatabaseReference myRef = database.getReference("message");
+                myRef.setValue(question);
                 fragment.addItem(question, R.drawable.great_wall_of_china);
             }
 
