@@ -51,7 +51,6 @@ public class MainActivity extends AppCompatActivity {
 
                 DatabaseReference ref = mDatabase.child(DATABASE_QUESTIONS).push();
                 String questionUUID = ref.getKey();
-
                 ref.setValue(new Question(question, "my answer"));
 
                 fragment.addItem(question, R.drawable.great_wall_of_china);

@@ -1,8 +1,5 @@
 package com.learn.cards;
 
-import android.content.ContentResolver;
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -13,21 +10,29 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.learn.cards.models.Question;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 public class CardFragment extends Fragment {
 
+    private DatabaseReference mDatabase;
+    public static final String DATABASE_QUESTIONS =  "questions";
+    private Set<Question> questionSet = new HashSet<>();
     ArrayList<CardModel> listitems = new ArrayList<>();
     RecyclerView MyRecyclerView;
-    String CardTitles[] = {"Chichen Itza"};
-    int  Images[] = {R.drawable.chichen_itza};
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        initializeList();
         getActivity().setTitle("All Cards");
     }
 
@@ -37,13 +42,34 @@ public class CardFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_card_view, container, false);
         MyRecyclerView = (RecyclerView) view.findViewById(R.id.cardView);
-        MyRecyclerView.setHasFixedSize(true);
-        LinearLayoutManager MyLayoutManager = new LinearLayoutManager(getActivity());
-        MyLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        if (listitems.size() > 0 & MyRecyclerView != null) {
-            MyRecyclerView.setAdapter(new MyAdapter(listitems));
-        }
-        MyRecyclerView.setLayoutManager(MyLayoutManager);
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        mDatabase = database.getReference();
+        mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                DataSnapshot questions = dataSnapshot.child(DATABASE_QUESTIONS);
+                for(DataSnapshot child : questions.getChildren()){
+                    Question question = child.getValue(Question.class);
+                    questionSet.add(question);
+                }
+                initializeList();
+
+                LinearLayoutManager MyLayoutManager = new LinearLayoutManager(getActivity());
+                MyLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+
+                MyRecyclerView.setHasFixedSize(true);
+                if (listitems.size() > 0 & MyRecyclerView != null) {
+                    MyRecyclerView.setAdapter(new MyAdapter(listitems));
+                }
+                MyRecyclerView.setLayoutManager(MyLayoutManager);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
         return view;
     }
@@ -80,11 +106,9 @@ public class CardFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(final MyViewHolder holder, int position) {
-
             holder.titleTextView.setText(list.get(position).getCardName());
-            holder.coverImageView.setImageResource(list.get(position).getImageResourceId());
-            holder.coverImageView.setTag(list.get(position).getImageResourceId());
-
+            holder.coverImageView.setImageResource(R.drawable.chichen_itza);
+            holder.coverImageView.setTag(R.drawable.chichen_itza);
         }
 
         @Override
@@ -106,11 +130,10 @@ public class CardFragment extends Fragment {
     }
 
     public void initializeList() {
-        //listitems.clear();
-        for(int i =0;i<CardTitles.length;i++){
+        for(Question question: questionSet){
             CardModel item = new CardModel();
-            item.setCardName(CardTitles[i]);
-            item.setImageResourceId(Images[i]);
+            item.setCardName(question.getQuestion());
+            item.setImageResourceId(R.drawable.chichen_itza);
             listitems.add(item);
         }
     }
