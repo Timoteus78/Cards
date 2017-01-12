@@ -18,6 +18,7 @@ public class MainActivity extends AppCompatActivity {
 
     public static final String TAG_FIREBASE = "FIREBASE";
     public static final String DATABASE_QUESTIONS =  "questions";
+    public static final String AUTH_MESSAGE = "com.learn.cards.AUTH";
     private DatabaseReference mDatabase;
 
     @Override
@@ -80,6 +81,10 @@ public class MainActivity extends AppCompatActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
+        } else if (id == R.id.action_logout) {
+            Intent intent = new Intent();
+            intent.putExtra(AUTH_MESSAGE, "logout");
+            startActivity(intent);
         }
 
         return super.onOptionsItemSelected(item);
