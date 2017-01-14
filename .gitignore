@@ -6,3 +6,5 @@ gradlew.bat
 /.idea/libraries
 .DS_Store
 /build
+*.iml
+/app/*.iml
