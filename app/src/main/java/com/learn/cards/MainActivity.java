@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
         if (id == R.id.action_settings) {
             return true;
         } else if (id == R.id.action_logout) {
-            Intent intent = new Intent();
+            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
             intent.putExtra(AUTH_MESSAGE, "logout");
             startActivity(intent);
         }
