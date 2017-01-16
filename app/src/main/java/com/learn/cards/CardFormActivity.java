@@ -13,6 +13,7 @@ import android.widget.EditText;
 public class CardFormActivity extends AppCompatActivity {
 
     public final static String MESSAGE_QUESTION = "com.learn.cards.QUESTION";
+    public final static String MESSAGE_ANSWER = "com.learn.cards.ANSWER";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,9 +33,16 @@ public class CardFormActivity extends AppCompatActivity {
 
     private void submitCardForm() {
         Intent intent = new Intent(this, MainActivity.class);
-        EditText editText = (EditText) findViewById(R.id.editText5);
-        String message = editText.getText().toString();
-        intent.putExtra(MESSAGE_QUESTION, message);
+
+        EditText questionField = (EditText) findViewById(R.id.questionField);
+        String question = questionField.getText().toString();
+        intent.putExtra(MESSAGE_QUESTION, question);
+
+        EditText answerField = (EditText) findViewById(R.id.answerField);
+        String answer = answerField.getText().toString();
+        intent.putExtra(MESSAGE_ANSWER, answer);
+
+
         startActivity(intent);
     }
 

@@ -30,10 +30,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textLongMessage"
-                android:text="Name"
                 android:ems="10"
-                android:id="@+id/editText5"
+                android:id="@+id/questionField"
                 android:hint="Type question ..." />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textLongMessage"
+                android:ems="10"
+                android:id="@+id/answerField"
+                android:hint="Type answer ..." />
+
         </LinearLayout>
     </HorizontalScrollView>
 </RelativeLayout>
