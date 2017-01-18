@@ -106,7 +106,7 @@ public class CardFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(final MyViewHolder holder, int position) {
-            holder.titleTextView.setText(list.get(position).getCardName());
+            holder.questionTextView.setText(list.get(position).getCardName());
             holder.coverImageView.setImageResource(R.drawable.chichen_itza);
             holder.coverImageView.setTag(R.drawable.chichen_itza);
         }
@@ -119,12 +119,13 @@ public class CardFragment extends Fragment {
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView titleTextView;
+
+        public TextView questionTextView;
         public ImageView coverImageView;
 
         public MyViewHolder(View v) {
             super(v);
-            titleTextView = (TextView) v.findViewById(R.id.titleTextView);
+            questionTextView = (TextView) v.findViewById(R.id.questionTextView);
             coverImageView = (ImageView) v.findViewById(R.id.coverImageView);
         }
     }
