@@ -1,14 +1,11 @@
 package com.learn.cards;
 
-import android.animation.AnimatorInflater;
-import android.animation.AnimatorSet;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,18 +21,11 @@ public class MainActivity extends AppCompatActivity {
     public static final String AUTH_MESSAGE = "com.learn.cards.AUTH";
     private DatabaseReference mDatabase;
 
-    private AnimatorSet mSetRightOut;
-    private AnimatorSet mSetLeftIn;
-    private boolean mIsBackVisible = false;
-    private View mCardFrontLayout;
-    private View mCardBackLayout;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         mDatabase = database.getReference();
@@ -60,11 +50,9 @@ public class MainActivity extends AppCompatActivity {
             String question = intent.getStringExtra(CardFormActivity.MESSAGE_QUESTION);
             String answer = intent.getStringExtra(CardFormActivity.MESSAGE_ANSWER);
             if (question != null && answer != null) {
-
                 DatabaseReference ref = mDatabase.child(DATABASE_QUESTIONS).push();
                 String questionUUID = ref.getKey();
                 ref.setValue(new Question(question, answer));
-
                 fragment.addItem(question, R.drawable.great_wall_of_china);
             }
 
@@ -72,12 +60,6 @@ public class MainActivity extends AppCompatActivity {
                     .add(R.id.fragmentContainer, fragment)
                     .commit();
         }
-
-
-/*        findViews();
-        loadAnimations();
-        changeCameraDistance();*/
-
     }
 
     @Override
@@ -109,41 +91,6 @@ public class MainActivity extends AppCompatActivity {
     public void createCardForm (View view) {
         Intent intent = new Intent(this, CardFormActivity.class);
         startActivity(intent);
-    }
-
-    private void changeCameraDistance() {
-        int distance = 8000;
-        float scale = getResources().getDisplayMetrics().density * distance;
-        mCardFrontLayout.setCameraDistance(scale);
-        mCardBackLayout.setCameraDistance(scale);
-    }
-
-    private void loadAnimations() {
-        mSetRightOut = (AnimatorSet) AnimatorInflater.loadAnimator(this, R.animator.out_animation);
-        mSetLeftIn = (AnimatorSet) AnimatorInflater.loadAnimator(this, R.animator.in_animation);
-    }
-
-    public void flipCard(View view) {
-        Log.d("[MAIN]", "flipCard haha");
-        FragmentManager fm = getSupportFragmentManager();
-        CardFragment fragment = (CardFragment)fm.findFragmentById(R.id.fragmentContainer);
-        mCardBackLayout = fragment.getView().findViewById(R.id.cardView).findViewById(R.id.card_view).findViewById(R.id.card_back);
-        mCardFrontLayout = fragment.getView().findViewById(R.id.cardView).findViewById(R.id.card_view).findViewById(R.id.card_front);
-        loadAnimations();
-        changeCameraDistance();
-        if (!mIsBackVisible) {
-            mSetRightOut.setTarget(mCardFrontLayout);
-            mSetLeftIn.setTarget(mCardBackLayout);
-            mSetRightOut.start();
-            mSetLeftIn.start();
-            mIsBackVisible = true;
-        } else {
-            mSetRightOut.setTarget(mCardBackLayout);
-            mSetLeftIn.setTarget(mCardFrontLayout);
-            mSetRightOut.start();
-            mSetLeftIn.start();
-            mIsBackVisible = false;
-        }
     }
 
 }
