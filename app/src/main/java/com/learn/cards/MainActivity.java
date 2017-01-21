@@ -48,12 +48,11 @@ public class MainActivity extends AppCompatActivity {
 
             Intent intent = getIntent();
             String question = intent.getStringExtra(CardFormActivity.MESSAGE_QUESTION);
-            if (question != null) {
-
+            String answer = intent.getStringExtra(CardFormActivity.MESSAGE_ANSWER);
+            if (question != null && answer != null) {
                 DatabaseReference ref = mDatabase.child(DATABASE_QUESTIONS).push();
                 String questionUUID = ref.getKey();
-                ref.setValue(new Question(question, "my answer"));
-
+                ref.setValue(new Question(question, answer));
                 fragment.addItem(question, R.drawable.great_wall_of_china);
             }
 
@@ -61,7 +60,6 @@ public class MainActivity extends AppCompatActivity {
                     .add(R.id.fragmentContainer, fragment)
                     .commit();
         }
-
     }
 
     @Override

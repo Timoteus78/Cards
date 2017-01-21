@@ -1,15 +1,24 @@
 package com.learn.cards;
 
 public class CardModel {
-    String cardName;
+    String question;
+    String answer;
     int imageResourceId;
 
-    public String getCardName() {
-        return cardName;
+    public String getAnswer() {
+        return answer;
     }
 
-    public void setCardName(String cardName) {
-        this.cardName = cardName;
+    public void setAnswer(String answer) {
+        this.answer = answer;
+    }
+
+    public String getQuestion() {
+        return question;
+    }
+
+    public void setQuestion(String question) {
+        this.question = question;
     }
 
     public int getImageResourceId() {

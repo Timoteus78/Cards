@@ -3,6 +3,8 @@ package com.learn.cards;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.CardView;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,6 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import android.util.Log;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -81,11 +85,9 @@ public class CardFragment extends Fragment {
 
     public void addItem(String title, int drawable) {
         CardModel item  = new CardModel();
-        item.setCardName(title);
+        item.setQuestion(title);
         item.setImageResourceId(drawable);
-
         listitems.add(item);
-        //MyRecyclerView.getAdapter().notifyItemInserted(listitems.size() -1);
     }
 
     public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
@@ -106,7 +108,8 @@ public class CardFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(final MyViewHolder holder, int position) {
-            holder.titleTextView.setText(list.get(position).getCardName());
+            holder.questionTextView.setText(list.get(position).getQuestion());
+            holder.answerTextView.setText(list.get(position).getAnswer());
             holder.coverImageView.setImageResource(R.drawable.chichen_itza);
             holder.coverImageView.setTag(R.drawable.chichen_itza);
         }
@@ -119,21 +122,40 @@ public class CardFragment extends Fragment {
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView titleTextView;
+        public CardView cardView;
+        public TextView questionTextView;
+        public TextView answerTextView;
         public ImageView coverImageView;
 
-        public MyViewHolder(View v) {
-            super(v);
-            titleTextView = (TextView) v.findViewById(R.id.titleTextView);
-            coverImageView = (ImageView) v.findViewById(R.id.coverImageView);
+        public MyViewHolder(View itemView) {
+            super(itemView);
+            this.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    View cardFlipRoot = v.findViewById(R.id.card_view);
+                    View back = v.findViewById(R.id.card_back);
+                    View front = v.findViewById(R.id.card_front);
+
+                    FlipAnimation flipAnimation = new FlipAnimation(front, back);
+                    if(front.getVisibility() == View.GONE) {
+                        flipAnimation.reverse();
+                    }
+                    cardFlipRoot.startAnimation(flipAnimation);
+                }
+            });
+            cardView = (CardView) itemView.findViewById(R.id.card_view);
+            questionTextView = (TextView) itemView.findViewById(R.id.questionTextView);
+            answerTextView = (TextView) itemView.findViewById(R.id.answerTextView);
+            coverImageView = (ImageView) itemView.findViewById(R.id.coverImageView);
         }
     }
 
     public void initializeList() {
         for(Question question: questionSet){
             CardModel item = new CardModel();
-            item.setCardName(question.getQuestion());
+            item.setQuestion(question.getQuestion());
             item.setImageResourceId(R.drawable.chichen_itza);
+            item.setAnswer(question.getAnswer());
             listitems.add(item);
         }
     }
