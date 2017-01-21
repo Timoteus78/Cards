@@ -132,7 +132,7 @@ public class CardFragment extends Fragment {
             this.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    View cardFlipRoot = v.findViewById(R.id.card_flip_root);
+                    View cardFlipRoot = v.findViewById(R.id.card_view);
                     View back = v.findViewById(R.id.card_back);
                     View front = v.findViewById(R.id.card_front);
 
