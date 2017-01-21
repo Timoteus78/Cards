@@ -1,5 +1,6 @@
 package com.learn.cards;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -10,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -29,6 +31,9 @@ import java.util.Set;
 public class CardFragment extends Fragment {
 
     private DatabaseReference mDatabase;
+    private static final String TAG_CARD = "com.learn.cards.CARD";
+    public final static String MESSAGE_QUESTION_EDIT = "com.learn.cards.QUESTION_EDIT";
+    public final static String MESSAGE_ANSWER_EDIT = "com.learn.cards.ANSWER_EDIT";
     public static final String DATABASE_QUESTIONS =  "questions";
     private Set<Question> questionSet = new HashSet<>();
     ArrayList<CardModel> listitems = new ArrayList<>();
@@ -141,6 +146,20 @@ public class CardFragment extends Fragment {
                         flipAnimation.reverse();
                     }
                     cardFlipRoot.startAnimation(flipAnimation);
+                }
+
+            });
+            this.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    Log.d(TAG_CARD,"This is a long click. Open Card form and populate the form. Change action button action to update instead of save.");
+                    String question = questionTextView.getText().toString();
+                    String answer = answerTextView.getText().toString();
+                    Intent intent = new Intent(v.getContext(), CardFormActivity.class);
+                    intent.putExtra(MESSAGE_QUESTION_EDIT, question);
+                    intent.putExtra(MESSAGE_ANSWER_EDIT, answer);
+                    startActivity(intent);
+                    return false;
                 }
             });
             cardView = (CardView) itemView.findViewById(R.id.card_view);
