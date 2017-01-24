@@ -1,6 +1,9 @@
 package com.learn.cards;
 
+import java.util.UUID;
+
 public class CardModel {
+    String id;
     String question;
     String answer;
     int imageResourceId;
@@ -27,5 +30,13 @@ public class CardModel {
 
     public void setImageResourceId(int imageResourceId) {
         this.imageResourceId = imageResourceId;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }

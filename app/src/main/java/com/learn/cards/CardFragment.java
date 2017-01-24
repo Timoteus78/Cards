@@ -3,6 +3,7 @@ package com.learn.cards;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.annotation.StringDef;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -27,6 +28,7 @@ import com.learn.cards.models.Question;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 public class CardFragment extends Fragment {
 
@@ -34,6 +36,7 @@ public class CardFragment extends Fragment {
     private static final String TAG_CARD = "com.learn.cards.CARD";
     public final static String MESSAGE_QUESTION_EDIT = "com.learn.cards.QUESTION_EDIT";
     public final static String MESSAGE_ANSWER_EDIT = "com.learn.cards.ANSWER_EDIT";
+    public final static String MESSAGE_ID_EDIT = "com.learn.cards.ID_EDIT";
     public static final String DATABASE_QUESTIONS =  "questions";
     private Set<Question> questionSet = new HashSet<>();
     ArrayList<CardModel> listitems = new ArrayList<>();
@@ -60,6 +63,7 @@ public class CardFragment extends Fragment {
                 DataSnapshot questions = dataSnapshot.child(DATABASE_QUESTIONS);
                 for(DataSnapshot child : questions.getChildren()){
                     Question question = child.getValue(Question.class);
+                    question.setId(child.getKey());
                     questionSet.add(question);
                 }
                 initializeList();
@@ -113,6 +117,7 @@ public class CardFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(final MyViewHolder holder, int position) {
+            holder.id = list.get(position).getId();
             holder.questionTextView.setText(list.get(position).getQuestion());
             holder.answerTextView.setText(list.get(position).getAnswer());
             holder.coverImageView.setImageResource(R.drawable.chichen_itza);
@@ -131,6 +136,7 @@ public class CardFragment extends Fragment {
         public TextView questionTextView;
         public TextView answerTextView;
         public ImageView coverImageView;
+        public String id;
 
         public MyViewHolder(View itemView) {
             super(itemView);
@@ -158,6 +164,7 @@ public class CardFragment extends Fragment {
                     Intent intent = new Intent(v.getContext(), CardFormActivity.class);
                     intent.putExtra(MESSAGE_QUESTION_EDIT, question);
                     intent.putExtra(MESSAGE_ANSWER_EDIT, answer);
+                    intent.putExtra(MESSAGE_ID_EDIT, id);
                     startActivity(intent);
                     return false;
                 }
@@ -172,6 +179,7 @@ public class CardFragment extends Fragment {
     public void initializeList() {
         for(Question question: questionSet){
             CardModel item = new CardModel();
+            item.setId(question.getId());
             item.setQuestion(question.getQuestion());
             item.setImageResourceId(R.drawable.chichen_itza);
             item.setAnswer(question.getAnswer());

@@ -27,13 +27,14 @@ public class CardFormActivity extends AppCompatActivity {
         Intent intent = getIntent();
         String question = intent.getStringExtra(CardFragment.MESSAGE_QUESTION_EDIT);
         String answer = intent.getStringExtra(CardFragment.MESSAGE_ANSWER_EDIT);
+        final String idEdited = intent.getStringExtra(CardFragment.MESSAGE_ID_EDIT);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         if(question != null && answer!= null) {
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    update();
+                    update(idEdited);
                 }
             });
             EditText questionField = (EditText) findViewById(R.id.questionField);
@@ -66,8 +67,22 @@ public class CardFormActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void update() {
+    private void update(String idEdited) {
         Log.d(TAG_UPDATE, "update database and card here");
+        Intent intent = new Intent(this, MainActivity.class);
+
+        EditText questionField = (EditText) findViewById(R.id.questionField);
+        String question = questionField.getText().toString();
+        intent.putExtra(CardFragment.MESSAGE_QUESTION_EDIT, question);
+
+        EditText answerField = (EditText) findViewById(R.id.answerField);
+        String answer = answerField.getText().toString();
+        intent.putExtra(CardFragment.MESSAGE_ANSWER_EDIT, answer);
+
+        intent.putExtra(CardFragment.MESSAGE_ID_EDIT, idEdited);
+
+
+        startActivity(intent);
     }
 
 }
