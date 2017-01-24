@@ -14,6 +14,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.learn.cards.models.Question;
 
+import java.util.UUID;
+
 public class MainActivity extends AppCompatActivity {
 
     public static final String TAG_FIREBASE = "FIREBASE";
@@ -49,11 +51,20 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = getIntent();
             String question = intent.getStringExtra(CardFormActivity.MESSAGE_QUESTION);
             String answer = intent.getStringExtra(CardFormActivity.MESSAGE_ANSWER);
+            String questionEdited = intent.getStringExtra(CardFragment.MESSAGE_QUESTION_EDIT);
+            String answerEdited = intent.getStringExtra(CardFragment.MESSAGE_ANSWER_EDIT);
+            String idEdited = intent.getStringExtra(CardFragment.MESSAGE_ID_EDIT);
             if (question != null && answer != null) {
+            //Add new card
                 DatabaseReference ref = mDatabase.child(DATABASE_QUESTIONS).push();
                 String questionUUID = ref.getKey();
                 ref.setValue(new Question(question, answer));
-                fragment.addItem(question, R.drawable.great_wall_of_china);
+                //fragment.addItem(question, R.drawable.great_wall_of_china);
+            }else if (questionEdited != null && answerEdited != null && idEdited != null) {
+            //Update card
+                //LOOK AT THIS CODE
+                DatabaseReference ref = mDatabase.child(DATABASE_QUESTIONS + '/' + idEdited);
+                ref.setValue(new Question(questionEdited, answerEdited));
             }
 
             fm.beginTransaction()

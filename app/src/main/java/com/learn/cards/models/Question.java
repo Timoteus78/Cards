@@ -1,8 +1,11 @@
 package com.learn.cards.models;
 
 
+import java.util.UUID;
+
 public class Question {
 
+    private String id;
     private String question;
     private String answer;
 
@@ -28,6 +31,14 @@ public class Question {
 
     public void setAnswer(String answer) {
         this.answer = answer;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     @Override
