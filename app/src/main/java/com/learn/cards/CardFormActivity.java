@@ -19,8 +19,10 @@ public class CardFormActivity extends AppCompatActivity {
 
     public final static String MESSAGE_QUESTION = "com.learn.cards.QUESTION";
     public final static String MESSAGE_ANSWER = "com.learn.cards.ANSWER";
+    public final static String MESSAGE_DELETE = "com.learn.cards.DELETE";
     private static final String TAG_UPDATE = "com.learn.cards.UPDATE";
     private static final String TAG_DELETE = "com.learn.cards.DELETE";
+    private String idEdited = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +34,7 @@ public class CardFormActivity extends AppCompatActivity {
         Intent intent = getIntent();
         String question = intent.getStringExtra(CardFragment.MESSAGE_QUESTION_EDIT);
         String answer = intent.getStringExtra(CardFragment.MESSAGE_ANSWER_EDIT);
-        final String idEdited = intent.getStringExtra(CardFragment.MESSAGE_ID_EDIT);
+        idEdited = intent.getStringExtra(CardFragment.MESSAGE_ID_EDIT);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         if(question != null && answer!= null) {
@@ -82,10 +84,9 @@ public class CardFormActivity extends AppCompatActivity {
                     new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            Log.d(TAG_DELETE,"Make delete call to database");
-                            //make delete call to database
-                            //transition back to main activity
-                            //toaster info that item has been removed?
+                            Intent intent = new Intent(CardFormActivity.this, MainActivity.class);
+                            intent.putExtra(MESSAGE_DELETE, idEdited);
+                            startActivity(intent);
                         }
                     }
             );
@@ -95,7 +96,6 @@ public class CardFormActivity extends AppCompatActivity {
                     new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            //Close dialog and stay on current card form
                             dialog.cancel();
                         }
                     }

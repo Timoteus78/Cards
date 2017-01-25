@@ -6,10 +6,13 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.learn.cards.models.Question;
@@ -54,17 +57,28 @@ public class MainActivity extends AppCompatActivity {
             String questionEdited = intent.getStringExtra(CardFragment.MESSAGE_QUESTION_EDIT);
             String answerEdited = intent.getStringExtra(CardFragment.MESSAGE_ANSWER_EDIT);
             String idEdited = intent.getStringExtra(CardFragment.MESSAGE_ID_EDIT);
+            String deleteId = intent.getStringExtra(CardFormActivity.MESSAGE_DELETE);
             if (question != null && answer != null) {
             //Add new card
                 DatabaseReference ref = mDatabase.child(DATABASE_QUESTIONS).push();
-                String questionUUID = ref.getKey();
                 ref.setValue(new Question(question, answer));
-                //fragment.addItem(question, R.drawable.great_wall_of_china);
             }else if (questionEdited != null && answerEdited != null && idEdited != null) {
             //Update card
-                //LOOK AT THIS CODE
                 DatabaseReference ref = mDatabase.child(DATABASE_QUESTIONS + '/' + idEdited);
                 ref.setValue(new Question(questionEdited, answerEdited));
+            } else if (deleteId != null) {
+            //Remove card
+                DatabaseReference ref = mDatabase.child(DATABASE_QUESTIONS + '/' + deleteId);
+                ref.setValue(null, new DatabaseReference.CompletionListener (){
+                    @Override
+                    public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+
+                        if (databaseError == null) {
+                            Toast.makeText(MainActivity.this, "Item removed successfully.",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
             }
 
             fm.beginTransaction()
